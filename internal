@@ -18,16 +18,18 @@ contract SimpleStorage {
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract EtherSender {
+contract EtherTransfer {
+    address public owner;
 
-    // Function to send Ether from the sender (MetaMask) to a recipient
-    function sendEther(address payable recipient) public payable {
-        require(msg.value > 0, "Send some Ether"); // Ensure some Ether is sent
-        recipient.transfer(msg.value); // Transfer Ether to recipient
+    constructor() {
+        owner = msg.sender; // contract deployer
     }
 
-    // Function to check contract balance
-    function getBalance() public view returns (uint) {
-        return address(this).balance;
+
+    function sendEther(address payable _to) public payable {
+        require(msg.value > 0, "You must send some Ether");
+        require(_to != address(0), "Invalid recipient address");
+
+        _to.transfer(msg.value);
     }
 }
