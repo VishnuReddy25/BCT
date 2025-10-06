@@ -1,0 +1,33 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract SimpleStorage {
+    uint256 private storedNumber; // The variable to store data
+
+    // Function to set the value
+    function set(uint256 _num) public {
+        storedNumber = _num;
+    }
+
+    // Function to get the stored value
+    function get() public view returns (uint256) {
+        return storedNumber;
+    }
+}
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract EtherSender {
+
+    // Function to send Ether from the sender (MetaMask) to a recipient
+    function sendEther(address payable recipient) public payable {
+        require(msg.value > 0, "Send some Ether"); // Ensure some Ether is sent
+        recipient.transfer(msg.value); // Transfer Ether to recipient
+    }
+
+    // Function to check contract balance
+    function getBalance() public view returns (uint) {
+        return address(this).balance;
+    }
+}
