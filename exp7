@@ -1,0 +1,127 @@
+1. Create a Project Folder
+mkdir solidity-truffle-demo
+cd solidity-truffle-demo
+2. Initialize Truffle Project
+truffle init
+This sets up a Truffle project with a sample structure:
+
+contracts/      <-- Your Solidity contracts go here
+migrations/     <-- Deployment scripts
+test/           <-- Test scripts (optional for now)
+truffle-config.js  <-- Configuration file
+🚀 Start Ganache
+Open Ganache GUI.
+
+Click on Quickstart Ethereum.
+
+Keep the window open. You’ll use the RPC address http://127.0.0.1:7545 in Truffle config.
+
+⚙️ Update truffle-config.js
+In truffle-config.js, add the following under networks:
+
+networks: {
+  development: {
+    host: "127.0.0.1",     // Localhost (Ganache)
+    port: 7545,            // Match Ganache GUI port
+    network_id: "*",       // Match any network id
+  },
+},
+📄 Create Solidity Contracts
+A. Demonstrate Variables: Variables.sol
+In contracts/Variables.sol:
+
+// SPDX-License-Identifier: MIT
+pragma solidity >0.8.1;
+
+contract Variables {
+    string public stateVariable = "This is a state variable";
+
+    function fun() public pure returns (string memory) {
+        string memory localVariable = "This is a Local Variable";
+        return localVariable;
+    }
+}
+B. Demonstrate Operators: Operators.sol
+In contracts/Operators.sol:
+
+// SPDX-License-Identifier: MIT
+pragma solidity >0.8.1;
+
+contract Operators {
+    function multiply(uint8 a, uint8 b) public pure returns (uint8) {
+        return a * b;
+    }
+
+    function compare(uint8 a, uint8 b, uint8 c) public pure returns (uint8) {
+        uint8 largest = a;
+        if (a > b) {
+            if (a < c) {
+                largest = c;
+            }
+        } else if (b > c) {
+            largest = b;
+        } else {
+            largest = c;
+        }
+        return largest;
+    }
+}
+
+📁 Create Migration Files
+1. Migrate Variables.sol
+Create file: migrations/2_deploy_variables.js
+
+const Variables = artifacts.require("Variables");
+
+module.exports = function (deployer) {
+  deployer.deploy(Variables);
+};
+2. Migrate Operators.sol
+Create file: migrations/3_deploy_operators.js
+
+const Operators = artifacts.require("Operators");
+
+module.exports = function (deployer) {
+  deployer.deploy(Operators);
+};
+🚀 Deploy Contracts
+In your terminal, run:
+
+truffle migrate --network development
+This will:
+
+Compile the contracts
+
+Deploy them to the Ganache blockchain
+
+Show transaction hashes, contract addresses, gas used, and cost
+
+🧪 Interact with Contracts Using Truffle Console
+Open the console:
+
+truffle console --network development
+Now run the following commands:
+
+A. Variables Contract
+let variables = await Variables.deployed();
+variables.stateVariable();       // Output: "This is a state variable"
+variables.fun();                 // Output: "This is a Local Variable"
+variables.address;               // Shows contract address
+B. Operators Contract
+let operators = await Operators.deployed();
+operators.multiply(2, 3);        // Output: 6
+operators.multiply(45, 33);      // Output: 1485
+operators.compare(3, 5, 6);      // Output: 6
+operators.compare(33678, 5, 6);  // Output: 33678
+Note: The return values are of type BN (Big Number), but they show clearly as integers when small.
+
+✅ Output Explanation
+Truffle console shows outputs like:
+
+BN { negative: 0, words: [ 6, <1 empty item> ], length: 1, red: null }
+This means the result is 6, stored in a BN.js object.
+
+Use:
+
+(await operators.multiply(2, 3)).toString()
+To convert to readable string (e.g., "6").
