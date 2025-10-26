@@ -1,0 +1,71 @@
+INHERITENCE EXP : 
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+// Parent contract
+contract Shape {
+    string internal shapeType;
+    
+    constructor(string memory _type) {
+        shapeType = _type;
+    }
+    
+    function getType() public view returns (string memory) {
+        return shapeType;
+    }
+}
+
+// Child contract inheriting from Shape
+contract Rectangle is Shape {
+    uint private width;
+    uint private height;
+    
+    constructor(uint _width, uint _height) Shape("Rectangle") {
+        width = _width;
+        height = _height;
+    }
+    
+    function getArea() public view returns (uint) {
+        return width * height;
+    }
+}
+
+// Another child contract inheriting from Shape
+contract Circle is Shape {
+    uint private radius;
+    
+    constructor(uint _radius) Shape("Circle") {
+        radius = _radius;
+    }
+    
+    function getArea() public view returns (uint) {
+        uint pi = 3; // Simplified pi for demo
+        return (pi * radius * radius) / 4;
+    }
+}
+
+
+9. Design a smart contract on remix Ethereum to print the array of integers and its length
+
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.0;
+
+contract Arraylength {
+    uint[] public integers;
+    
+    constructor() public{
+        integers = [1, 2, 3, 4, 5];
+    }
+    
+    function getArray() public view returns (uint[] memory) {
+        return integers;
+    }
+    
+    function getArrayLength() public view returns (uint) {
+        return integers.length;
+    }
+}
+
+
